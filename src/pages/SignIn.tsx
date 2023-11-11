@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Container, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Auth } from 'firebase/auth';
-import { signInGoogle, useSignIn } from './UseSignIn';
+import { signInGoogle, useSignIn } from '../components/UseSignIn';
 
 export const SignIn = (props: {
 	auth: Auth

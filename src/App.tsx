@@ -5,8 +5,8 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
-import { SignIn } from "./SignIn";
-import { Home } from './Home';
+import { SignIn } from "./pages/SignIn";
+import { Home } from './pages/Home';
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_apiKey,

@@ -66,7 +66,7 @@ const fetchWithKey = async <T,>(firestore: Firestore, path: string, key: string)
  * @param firestore Firestore app instance
  * @param path Path to table
  * @param key Table indexing key
- * @param generator Default value generator function
+ * @param generator Default value generator function for T
  * @returns Fetched or created instance of T.
  */
 const fetchOrCreate = async <T,>(firestore: Firestore, path: string, key: string, generator: () => T): Promise<T> => {

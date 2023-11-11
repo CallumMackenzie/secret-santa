@@ -4,8 +4,8 @@ import { Auth, User } from 'firebase/auth';
 import { Firestore } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { SignInRequired, useRequiredSignIn, useSignIn } from './UseSignIn';
-import { SignOutButton } from './SignOutButton';
+import { SignInRequired, useRequiredSignIn, useSignIn } from '../components/UseSignIn';
+import { SignOutButton } from '../components/SignOutButton';
 
 
 export const Home = (props: {
