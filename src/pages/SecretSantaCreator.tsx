@@ -1,8 +1,13 @@
+import { FestiveBackground } from "../components/FestiveBackground";
 
 
 
 export const SecretSantaCreator = (props: {
 
 }) => {
-	return (<></>);
+	return (<>
+		<FestiveBackground>
+
+		</FestiveBackground>
+	</>);
 }

@@ -44,7 +44,7 @@ const HomeSignedIn = (props: {
 				<Grid item>
 					<Button
 						variant="contained"
-						onClick={() => props.navigate("create")}>
+						onClick={() => props.navigate("/create")}>
 						Create New Secret Santa
 					</Button>
 				</Grid>

@@ -8,6 +8,7 @@ import { getAuth } from 'firebase/auth';
 import { SignIn } from "./pages/SignIn";
 import { Home } from './pages/Home';
 import { SecretSantaCreator } from './pages/SecretSantaCreator';
+import { PageNotFound } from './pages/404';
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_apiKey,
@@ -32,6 +33,7 @@ const App = () => {
 					<Route index element={<SignIn auth={auth} />} />
 					<Route path="home" element={<Home firestore={firestore} auth={auth} />} />
 					<Route path="create" element={<SecretSantaCreator />} />
+					<Route path="*" element={<PageNotFound auth={auth} />} />
 				</Route>
 			</Routes>
 		</BrowserRouter >
