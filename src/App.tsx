@@ -7,6 +7,7 @@ import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import { SignIn } from "./pages/SignIn";
 import { Home } from './pages/Home';
+import { SecretSantaCreator } from './pages/SecretSantaCreator';
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_apiKey,
@@ -30,6 +31,7 @@ const App = () => {
 				<Route path="/" >
 					<Route index element={<SignIn auth={auth} />} />
 					<Route path="home" element={<Home firestore={firestore} auth={auth} />} />
+					<Route path="create" element={<SecretSantaCreator />} />
 				</Route>
 			</Routes>
 		</BrowserRouter >

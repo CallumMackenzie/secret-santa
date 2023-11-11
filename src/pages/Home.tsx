@@ -2,10 +2,10 @@
 import { Box, Button, Grid, Paper } from '@mui/material';
 import { Auth, User } from 'firebase/auth';
 import { Firestore } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { SignInRequired, useRequiredSignIn, useSignIn } from '../components/UseSignIn';
+import { SignInRequired, useRequiredSignIn } from '../components/UseSignIn';
 import { SignOutButton } from '../components/SignOutButton';
+import { FestiveBackground } from '../components/FestiveBackground';
+import { NavigateFunction } from 'react-router';
 
 
 export const Home = (props: {
@@ -14,27 +14,19 @@ export const Home = (props: {
 }) => {
 	const [navigate, user, foundUser] = useRequiredSignIn(props.auth);
 	return (<>
-		<Box
-			style={{
-				backgroundImage: 'url("/background.jpg")',
-				backgroundSize: "cover",
-				backgroundRepeat: "no-repeat"
-			}}
-			display="flex"
-			justifyContent="center"
-			alignItems="center"
-			minHeight="100vh">
+		<FestiveBackground>
 			<SignInRequired auth={props.auth} user={user}>
-				<HomeSignedIn {...props} user={user!!} />
+				<HomeSignedIn {...props} user={user!!} navigate={navigate} />
 			</SignInRequired>
-		</Box>
+		</FestiveBackground>
 	</>);
 };
 
 const HomeSignedIn = (props: {
 	auth: Auth,
 	firestore: Firestore,
-	user: User
+	user: User,
+	navigate: NavigateFunction
 }) => {
 	return (<>
 		<Paper
@@ -50,7 +42,9 @@ const HomeSignedIn = (props: {
 					<h1>Welcome, {props.user.displayName}!</h1>
 				</Grid>
 				<Grid item>
-					<Button variant="contained">
+					<Button
+						variant="contained"
+						onClick={() => props.navigate("create")}>
 						Create New Secret Santa
 					</Button>
 				</Grid>

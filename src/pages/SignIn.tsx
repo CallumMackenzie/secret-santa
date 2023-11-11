@@ -1,9 +1,10 @@
 
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Container, Grid, Paper } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Button, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Auth } from 'firebase/auth';
 import { signInGoogle, useSignIn } from '../components/UseSignIn';
+import { FestiveBackground } from '../components/FestiveBackground';
 
 export const SignIn = (props: {
 	auth: Auth
@@ -16,16 +17,7 @@ export const SignIn = (props: {
 	}, [foundUser]);
 
 	return (<>
-		<Box
-			style={{
-				backgroundImage: 'url("/background.jpg")',
-				backgroundSize: "cover",
-				backgroundRepeat: "no-repeat"
-			}}
-			display="flex"
-			justifyContent="center"
-			alignItems="center"
-			minHeight="100vh">
+		<FestiveBackground>
 			<Paper
 				sx={{ p: 5 }}
 				elevation={5}>
@@ -46,6 +38,6 @@ export const SignIn = (props: {
 					</Grid>
 				</Grid>
 			</Paper>
-		</Box>
+		</FestiveBackground>
 	</>);
 }
