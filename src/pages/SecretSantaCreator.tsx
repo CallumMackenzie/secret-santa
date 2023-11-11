@@ -1,7 +1,7 @@
 import { Box, Button, CircularProgress, Grid, Paper, TextField } from "@mui/material";
 import { FestiveBackground } from "../components/FestiveBackground";
-import { useEffect, useMemo, useState } from "react";
-import { SignInRequired, useRequiredSignIn, useSignIn } from "../components/UseSignIn";
+import { useEffect, useState } from "react";
+import { SignInRequired, useRequiredSignIn } from "../components/UseSignIn";
 import { Auth, User } from "firebase/auth";
 import { Account, SecretSanta, fetchAccount, getNextSecretSantaUid, saveSecretSanta } from "../model/Model";
 import { Firestore } from "firebase/firestore";
@@ -79,26 +79,26 @@ const SecretSantaCreatorUserVerified = (props: {
 				</Grid>
 				<Grid item>
 					<TextField
-						disabled={creationState != CreationState.NotCreated}
+						disabled={creationState !== CreationState.NotCreated}
 						fullWidth={true}
 						onChange={(event) => setName(event.target.value)}
 						required={true}
-						error={name == ""}
-						helperText={name == "" ? "Please enter a name." : "A festive name!"}
+						error={name === ""}
+						helperText={name === "" ? "Please enter a name." : "A festive name!"}
 						label='Secret Santa Name'
 						variant='outlined' />
 				</Grid>
 				<Grid item>
 					<TextField
-						disabled={creationState != CreationState.NotCreated}
+						disabled={creationState !== CreationState.NotCreated}
 						multiline={true}
 						fullWidth={true}
 						minRows={4}
 						maxRows={10}
 						onChange={event => setGuidelines(event.target.value)}
 						required={true}
-						error={guidelines == ""}
-						helperText={guidelines == ""
+						error={guidelines === ""}
+						helperText={guidelines === ""
 							? "Please enter guidelines."
 							: "Guidelines, rules, and regulations for your participants!"}
 						label="Guidelines"
@@ -111,19 +111,19 @@ const SecretSantaCreatorUserVerified = (props: {
 						justifyContent='center'>
 						<Button
 							color={!admin ? 'secondary' : (
-								creationState == CreationState.Created ? 'success' : undefined
+								creationState === CreationState.Created ? 'success' : undefined
 							)}
-							disabled={creationState != CreationState.NotCreated
+							disabled={creationState !== CreationState.NotCreated
 								|| !admin
-								|| guidelines == "" || !guidelines
-								|| name == "" || !name}
+								|| guidelines === "" || !guidelines
+								|| name === "" || !name}
 							onClick={() => create()}
 							variant='contained'>
 							{["Create Secret Santa!", "Creating", "Created"][creationState]}
 						</Button>
 					</Box>
 				</Grid>
-				{creationState == CreationState.Creating &&
+				{creationState === CreationState.Creating &&
 					<Grid item>
 						<Box
 							display='flex'
@@ -132,7 +132,7 @@ const SecretSantaCreatorUserVerified = (props: {
 							<CircularProgress />
 						</Box>
 					</Grid>}
-				{creationState == CreationState.Created && <CreatedOptions />}
+				{creationState === CreationState.Created && <CreatedOptions />}
 			</Grid>
 		</Paper>
 	</>);
