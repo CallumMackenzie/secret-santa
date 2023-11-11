@@ -32,26 +32,33 @@ const HomeSignedIn = (props: {
 	const navigate = useNavigate();
 
 	return (<>
-		<Paper
-			sx={{ p: 2 }}
-			elevation={3}>
+		<Paper>
 			<Grid
+				padding={2}
 				container
 				spacing={1}
-				textAlign="center"
-				justifyContent='center'
-				alignItems="center">
+				direction='column'
+				textAlign='center'
+				alignItems='center'
+				justifyContent='center'>
 				<Grid item xs={12}>
-					<h1>Welcome, {props.user.displayName}!</h1>
+					<Box sx={{ fontSize: 50 }}>
+						Secret Santa !
+					</Box>
 				</Grid>
-				<Grid item xs={12} sm={6}>
+				<Grid item xs={12}>
+					<Box sx={{ fontSize: 20, color: 'secondary.main', fontStyle: 'bold' }}>
+						Welcome, {props.user.displayName}!
+					</Box>
+				</Grid>
+				<Grid item xs={12} sm={6} md={4}>
 					<Button
 						variant="contained"
 						onClick={() => navigate("/create")}>
 						Create New Secret Santa
 					</Button>
 				</Grid>
-				<Grid item xs={12} sm={6}>
+				<Grid item xs={12} sm={6} md={4}>
 					<Button
 						variant="contained"
 						onClick={() => navigate("/join")}>

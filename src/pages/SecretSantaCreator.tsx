@@ -83,7 +83,7 @@ const SecretSantaCreatorUserVerified = (props: {
 					<Box sx={{
 						fontSize: 50
 					}}>
-						Secret Santa Creator
+						Create a Secret Santa
 					</Box>
 				</Grid>
 				<Grid item>
@@ -164,7 +164,7 @@ const CreatedOptions = (props: {
 					color={props.creationState === CreationState.Created ? 'success' : undefined}
 					onClick={() => navigate("/home")}
 					variant="contained">
-					Go Home
+					Home
 				</Button>
 			</Box>
 		</Grid>
