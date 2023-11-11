@@ -1,6 +1,7 @@
-import { GoogleAuthProvider, UserCredential, signInWithPopup, Auth, OAuthCredential } from "firebase/auth";
+import { GoogleAuthProvider, UserCredential, signInWithPopup, Auth, OAuthCredential, User } from "firebase/auth";
+import React from "react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const googleAuthProvider = new GoogleAuthProvider();
 
@@ -37,4 +38,28 @@ export const useSignIn = (auth: Auth): boolean | undefined => {
 	});
 
 	return foundUser;
+};
+
+
+
+export const useRequiredSignIn = (auth: Auth): [NavigateFunction, User | null, boolean | undefined] => {
+	const navigate = useNavigate();
+	const foundUser = useSignIn(auth);
+	const [user, setUser] = useState(auth.currentUser);
+
+	useEffect(() => {
+		if (foundUser === false) navigate("/");
+		else if (foundUser === true) setUser(auth.currentUser);
+	}, [foundUser]);
+
+	return [navigate, user, foundUser];
+};
+
+export const SignInRequired = (props: React.PropsWithChildren<{
+	user: User | null,
+	auth: Auth
+}>) => {
+	return (<>
+		{props.user ? props.children : <></>}
+	</>);
 };

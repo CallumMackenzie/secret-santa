@@ -27,9 +27,12 @@ export const SignIn = (props: {
 			alignItems="center"
 			minHeight="100vh">
 			<Paper
-				style={{ padding: "3em" }}
+				sx={{ p: 5 }}
 				elevation={5}>
-				<Grid>
+				<Grid
+					container
+					direction="column"
+					textAlign="center">
 					<Grid item xs={12}>
 						<h1>Secret Santa!</h1>
 					</Grid>

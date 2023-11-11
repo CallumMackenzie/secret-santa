@@ -1,10 +1,10 @@
 
 import { Box, Button, Grid, Paper } from '@mui/material';
-import { Auth } from 'firebase/auth';
+import { Auth, User } from 'firebase/auth';
 import { Firestore } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useSignIn } from './UseSignIn';
+import { SignInRequired, useRequiredSignIn, useSignIn } from './UseSignIn';
 import { SignOutButton } from './SignOutButton';
 
 
@@ -12,15 +12,7 @@ export const Home = (props: {
 	firestore: Firestore,
 	auth: Auth
 }) => {
-	const navigate = useNavigate();
-	const foundUser = useSignIn(props.auth);
-	const [user, setUser] = useState(props.auth.currentUser);
-
-	useEffect(() => {
-		if (foundUser === false) navigate("/");
-		else if (foundUser === true) setUser(props.auth.currentUser);
-	}, [foundUser]);
-
+	const [navigate, user, foundUser] = useRequiredSignIn(props.auth);
 	return (<>
 		<Box
 			style={{
@@ -32,21 +24,40 @@ export const Home = (props: {
 			justifyContent="center"
 			alignItems="center"
 			minHeight="100vh">
-			<Paper
-				style={{ padding: "3em" }}
-				elevation={3}>
-				<Grid
-					container
-					alignItems="center"
-					direction="column">
-					<Grid item xs={12}>
-						<h1>Welcome, {user?.displayName}!</h1>
-					</Grid>
-					<Grid item>
-						<SignOutButton auth={props.auth} />
-					</Grid>
-				</Grid>
-			</Paper>
+			<SignInRequired auth={props.auth} user={user}>
+				<HomeSignedIn {...props} user={user!!} />
+			</SignInRequired>
 		</Box>
+	</>);
+};
+
+const HomeSignedIn = (props: {
+	auth: Auth,
+	firestore: Firestore,
+	user: User
+}) => {
+	return (<>
+		<Paper
+			sx={{ p: 2 }}
+			elevation={3}>
+			<Grid
+				container
+				spacing={1}
+				textAlign="center"
+				alignItems="center"
+				direction="column">
+				<Grid item>
+					<h1>Welcome, {props.user.displayName}!</h1>
+				</Grid>
+				<Grid item>
+					<Button variant="contained">
+						Create New Secret Santa
+					</Button>
+				</Grid>
+				<Grid item>
+					<SignOutButton auth={props.auth} />
+				</Grid>
+			</Grid>
+		</Paper>
 	</>);
 };
