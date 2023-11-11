@@ -31,6 +31,7 @@ export interface Participant {
 export interface Account {
 	userUid: string,
 	secretSantaUids: string[],
+	adminOfSecretSantas: string[]
 };
 
 /**
@@ -107,7 +108,8 @@ const save = async <T,>(firestore: Firestore, path: string, key: string, val: T)
 export const fetchAccount = async (firestore: Firestore, user: User): Promise<Account> =>
 	await fetchOrCreate(firestore, 'accounts', user.uid, () => ({
 		userUid: user.uid,
-		secretSantaUids: []
+		secretSantaUids: [],
+		adminOfSecretSantas: []
 	}));
 
 /**

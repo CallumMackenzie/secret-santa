@@ -3,7 +3,7 @@ import { FestiveBackground } from "../components/FestiveBackground";
 import { useEffect, useState } from "react";
 import { SignInRequired, useRequiredSignIn } from "../components/UseSignIn";
 import { Auth, User } from "firebase/auth";
-import { Account, SecretSanta, fetchAccount, getNextSecretSantaUid, saveSecretSanta } from "../model/Model";
+import { Account, SecretSanta, fetchAccount, getNextSecretSantaUid, saveAccount, saveSecretSanta } from "../model/Model";
 import { Firestore } from "firebase/firestore";
 import { useNavigate } from "react-router";
 
@@ -44,9 +44,7 @@ const SecretSantaCreatorUserVerified = (props: {
 			.then(account => setAdmin(account));
 	}, [props.firestore, props.user]);
 
-	const create = async () => {
-		setCreationState(CreationState.Creating);
-		const uid = await getNextSecretSantaUid(props.firestore);
+	const createSecretSanta = async (uid: string) => {
 		const secretSanta: SecretSanta = {
 			uid,
 			name: name!!,
@@ -56,6 +54,17 @@ const SecretSantaCreatorUserVerified = (props: {
 			started: false
 		};
 		await saveSecretSanta(props.firestore, secretSanta);
+	};
+
+	const updateAdmin = async (uid: string) => {
+		admin?.adminOfSecretSantas.push(uid);
+		await saveAccount(props.firestore, admin!!);
+	};
+
+	const create = async () => {
+		setCreationState(CreationState.Creating);
+		const uid = await getNextSecretSantaUid(props.firestore);
+		await Promise.all([createSecretSanta(uid), updateAdmin(uid)]);
 		setCreationState(CreationState.Created);
 	};
 
