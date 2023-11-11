@@ -3,6 +3,7 @@ import { FestiveBackground } from "../components/FestiveBackground";
 import { SignOutButton } from "../components/SignOutButton";
 import { Auth } from "firebase/auth";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 export const PageNotFound = (props: { auth: Auth }) => {
 	const navigate = useNavigate();

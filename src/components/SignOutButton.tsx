@@ -1,14 +1,17 @@
-import { Button } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import { Auth } from "firebase/auth";
 import { useNavigate } from "react-router";
 
-export const SignOutButton = (props: {
+interface SignOutButtonProps extends ButtonProps {
 	auth: Auth
-}) => {
+}
+
+export const SignOutButton = (props: SignOutButtonProps) => {
 	const navigate = useNavigate();
 
 	return (<>
 		<Button
+			{...props}
 			variant="contained"
 			onClick={() => {
 				props.auth.signOut();
