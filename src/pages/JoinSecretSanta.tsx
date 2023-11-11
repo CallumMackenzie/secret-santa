@@ -64,9 +64,8 @@ const JoinSecretSantaUserSignedIn = (props: JoinSecretSantaProps & {
 					<TextField
 						disabled={joinState === JoinState.Joining}
 						onChange={event => setJoinUid(event.target.value)}
-						error={joinState === JoinState.JoinError && joinUid !== ""}
-						helperText={(joinState === JoinState.JoinError
-							&& joinUid !== "") ? "Secret santa not found" : undefined}
+						error={joinState === JoinState.JoinError}
+						helperText={joinState === JoinState.JoinError ? "Secret santa not found" : undefined}
 						label="Join Code" />
 				</Grid>
 				<Grid item xs={6}>
