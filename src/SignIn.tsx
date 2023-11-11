@@ -17,7 +17,11 @@ export const SignIn = (props: {
 
 	return (<>
 		<Box
-			style={{ backgroundImage: 'url("/background.jpeg")' }}
+			style={{
+				backgroundImage: 'url("/background.jpg")',
+				backgroundSize: "cover",
+				backgroundRepeat: "no-repeat"
+			}}
 			display="flex"
 			justifyContent="center"
 			alignItems="center"
