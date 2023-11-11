@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { Firestore, collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { Firestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 /**
  * A secret santa instance.
