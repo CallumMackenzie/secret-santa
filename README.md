@@ -35,6 +35,7 @@
 - Account
 	- Has a collection of secret santas user is partaking in
 	- Can leave an unstarted secret santa
+	- Has a list of secret santas user is admin for
 - DeliveryStatus (enum)
 	- Undelievered
 	- Delivered
