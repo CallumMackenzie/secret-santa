@@ -44,6 +44,14 @@ export enum DeliveryStatus {
 
 
 /**
+ * Database representation for getting next UID.
+ */
+interface SecretSantaUidStore {
+	nextUid: string;
+};
+
+
+/**
  * 
  * @param firestore Firestore app instance
  * @param path Firestore table path
@@ -130,3 +138,15 @@ export const fetchSecretSanta = async (firestore: Firestore, uid: string): Promi
  */
 export const saveSecretSanta = async (firestore: Firestore, secretSanta: SecretSanta) =>
 	await save(firestore, 'secret-santas', secretSanta.uid, secretSanta);
+
+
+export const getNextSecretSantaUid = async (firestore: Firestore): Promise<string> => {
+	// Fetch or create DB uid
+	const uid = await fetchOrCreate<SecretSantaUidStore>(firestore, 'secret-santa-next-uid', 'next-uid',
+		() => ({ nextUid: "0" }));
+	// Generate and save next UID
+	let nextUid = (parseInt(uid.nextUid, 36) + 1).toString(36);
+	await save<SecretSantaUidStore>(firestore, 'secret-santa-next-uid', 'next-uid', { nextUid });
+	// Return previous saved UID
+	return uid.nextUid;
+};

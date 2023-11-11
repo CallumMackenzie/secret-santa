@@ -32,7 +32,7 @@ const App = () => {
 				<Route path="/" >
 					<Route index element={<SignIn auth={auth} />} />
 					<Route path="home" element={<Home firestore={firestore} auth={auth} />} />
-					<Route path="create" element={<SecretSantaCreator />} />
+					<Route path="create" element={<SecretSantaCreator firestore={firestore} auth={auth} />} />
 					<Route path="*" element={<PageNotFound auth={auth} />} />
 				</Route>
 			</Routes>

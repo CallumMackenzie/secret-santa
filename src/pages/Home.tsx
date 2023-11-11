@@ -5,18 +5,18 @@ import { Firestore } from 'firebase/firestore';
 import { SignInRequired, useRequiredSignIn } from '../components/UseSignIn';
 import { SignOutButton } from '../components/SignOutButton';
 import { FestiveBackground } from '../components/FestiveBackground';
-import { NavigateFunction } from 'react-router';
+import { NavigateFunction, useNavigate } from 'react-router';
 
 
 export const Home = (props: {
 	firestore: Firestore,
 	auth: Auth
 }) => {
-	const [navigate, user, foundUser] = useRequiredSignIn(props.auth);
+	const user = useRequiredSignIn(props.auth);
 	return (<>
 		<FestiveBackground>
 			<SignInRequired auth={props.auth} user={user}>
-				<HomeSignedIn {...props} user={user!!} navigate={navigate} />
+				<HomeSignedIn {...props} user={user!!} />
 			</SignInRequired>
 		</FestiveBackground>
 	</>);
@@ -25,9 +25,10 @@ export const Home = (props: {
 const HomeSignedIn = (props: {
 	auth: Auth,
 	firestore: Firestore,
-	user: User,
-	navigate: NavigateFunction
+	user: User
 }) => {
+	const navigate = useNavigate();
+
 	return (<>
 		<Paper
 			sx={{ p: 2 }}
@@ -44,7 +45,7 @@ const HomeSignedIn = (props: {
 				<Grid item>
 					<Button
 						variant="contained"
-						onClick={() => props.navigate("/create")}>
+						onClick={() => navigate("/create")}>
 						Create New Secret Santa
 					</Button>
 				</Grid>
