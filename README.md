@@ -32,7 +32,7 @@
 	- Has delivery info
 	- Has an individual they got
 	- Has a DeliveryStatus for their own gift
-- User
+- Account
 	- Has a collection of secret santas user is partaking in
 	- Can leave an unstarted secret santa
 - DeliveryStatus (enum)
