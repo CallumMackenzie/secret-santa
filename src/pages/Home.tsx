@@ -1,5 +1,5 @@
 
-import { Box, Button, Grid, Paper } from '@mui/material';
+import { Box, Button, Grid, Paper, TextField } from '@mui/material';
 import { Auth, User } from 'firebase/auth';
 import { Firestore } from 'firebase/firestore';
 import { SignInRequired, useRequiredSignIn } from '../components/UseSignIn';
@@ -37,19 +37,26 @@ const HomeSignedIn = (props: {
 				container
 				spacing={1}
 				textAlign="center"
-				alignItems="center"
-				direction="column">
-				<Grid item>
+				justifyContent='center'
+				alignItems="center">
+				<Grid item xs={12}>
 					<h1>Welcome, {props.user.displayName}!</h1>
 				</Grid>
-				<Grid item>
+				<Grid item xs={12}>
 					<Button
 						variant="contained"
 						onClick={() => navigate("/create")}>
 						Create New Secret Santa
 					</Button>
 				</Grid>
-				<Grid item>
+				<Grid item xs={6}>
+					<TextField
+						label="Join Code" />
+				</Grid>
+				<Grid item xs={6}>
+					<Button>Join Secret Santa</Button>
+				</Grid>
+				<Grid item xs={6}>
 					<SignOutButton auth={props.auth} />
 				</Grid>
 			</Grid>

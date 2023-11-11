@@ -132,13 +132,16 @@ const SecretSantaCreatorUserVerified = (props: {
 							<CircularProgress />
 						</Box>
 					</Grid>}
-				{creationState === CreationState.Created && <CreatedOptions />}
+				{creationState !== CreationState.Creating
+					&& <CreatedOptions creationState={creationState} />}
 			</Grid>
 		</Paper>
 	</>);
 }
 
-const CreatedOptions = () => {
+const CreatedOptions = (props: {
+	creationState: CreationState
+}) => {
 	const navigate = useNavigate();
 
 	return (<>
@@ -148,7 +151,8 @@ const CreatedOptions = () => {
 				alignItems='center'
 				justifyContent='center'>
 				<Button
-					color='success'
+					disabled={props.creationState === CreationState.Creating}
+					color={props.creationState === CreationState.Created ? 'success' : undefined}
 					onClick={() => navigate("/home")}
 					variant="contained">
 					Go Home
