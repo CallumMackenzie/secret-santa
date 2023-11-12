@@ -20,9 +20,9 @@ export interface Participant {
 	userUid: string,
 	wishlist: string[],
 	deliveryInfo: string,
-	giftsToUserUid: string,
-	giftFromUserUid: string,
-	deliveryStatus: DeliveryStatus,
+	giftsToUserUid: string | undefined,
+	giftFromUserUid: string | undefined,
+	deliveryStatus: DeliveryStatus | undefined,
 };
 
 /**

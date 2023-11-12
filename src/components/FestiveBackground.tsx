@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, BoxProps } from "@mui/material";
 
 
-export const FestiveBackground = (props: React.PropsWithChildren) => {
+export const FestiveBackground = (props: React.PropsWithChildren & BoxProps) => {
 	return (<>
 		<Box
 			style={{
@@ -12,7 +12,8 @@ export const FestiveBackground = (props: React.PropsWithChildren) => {
 			display="flex"
 			justifyContent="center"
 			alignItems="center"
-			minHeight="100vh">
+			minHeight="100vh"
+			{...props}>
 			{props.children}
 		</Box>
 	</>);

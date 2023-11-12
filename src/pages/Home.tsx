@@ -1,13 +1,13 @@
 
-import { Box, Button, Grid, Paper, TextField } from '@mui/material';
+import { Box, Button, Grid, List, ListItem, ListItemText, Paper, TextField } from '@mui/material';
 import { Auth, User } from 'firebase/auth';
 import { Firestore } from 'firebase/firestore';
 import { SignInRequired, useRequiredSignIn } from '../components/UseSignIn';
 import { SignOutButton } from '../components/SignOutButton';
 import { FestiveBackground } from '../components/FestiveBackground';
 import { NavigateFunction, useNavigate } from 'react-router';
-import { fetchAccount, fetchSecretSanta } from '../model/Model';
-import { useState } from 'react';
+import { Account, SecretSanta, fetchAccount, fetchSecretSanta } from '../model/Model';
+import { useEffect, useState } from 'react';
 
 
 export const Home = (props: {
@@ -30,6 +30,34 @@ const HomeSignedIn = (props: {
 	user: User
 }) => {
 	const navigate = useNavigate();
+
+	const [adminSecretSantas, setAdminSecretSantas] = useState<SecretSanta[] | undefined>();
+	const [secretSantas, setSecretSantas] = useState<SecretSanta[] | undefined>();
+
+	const fetchSecretSantas = async (account: Account) => {
+		const secretSantaPromises: Promise<SecretSanta | null>[] = [];
+		for (const ssUid of account.secretSantaUids)
+			secretSantaPromises.push(fetchSecretSanta(props.firestore, ssUid));
+		const sSantas = (await Promise.all(secretSantaPromises)).filter(v => v !== null);
+		setSecretSantas(sSantas as SecretSanta[]);
+	};
+
+	const fetchAdminSecretSantas = async (account: Account) => {
+		const secretSantaPromises: Promise<SecretSanta | null>[] = [];
+		for (const ssUid of account.adminOfSecretSantas)
+			secretSantaPromises.push(fetchSecretSanta(props.firestore, ssUid));
+		const sSantas = (await Promise.all(secretSantaPromises)).filter(v => v !== null);
+		setAdminSecretSantas(sSantas as SecretSanta[]);
+	}
+
+	useEffect(() => {
+		(async () => {
+			const account = await fetchAccount(props.firestore, props.user);
+			fetchSecretSantas(account);
+			fetchAdminSecretSantas(account);
+		})();
+	}, []);
+
 
 	return (<>
 		<Paper>
@@ -64,6 +92,32 @@ const HomeSignedIn = (props: {
 						onClick={() => navigate("/join")}>
 						Join a Secret Santa
 					</Button>
+				</Grid>
+				<Grid item xs={12}>
+					<Box sx={{ fontSize: 20 }}>
+						Your Secret Santas:
+					</Box>
+				</Grid>
+				<Grid item xs={12}>
+					<List>
+						{secretSantas?.map(secretSanta =>
+						(<ListItem>
+							<ListItemText>{secretSanta.name}</ListItemText>
+						</ListItem>))}
+					</List>
+				</Grid>
+				<Grid item xs={12}>
+					<Box sx={{ fontSize: 20 }}>
+						Secret Santas You Created:
+					</Box>
+				</Grid>
+				<Grid item xs={12}>
+					<List>
+						{adminSecretSantas?.map(secretSanta =>
+						(<ListItem>
+							<ListItemText>{secretSanta.name}</ListItemText>
+						</ListItem>))}
+					</List>
 				</Grid>
 				<Grid item xs={6}>
 					<SignOutButton auth={props.auth} />

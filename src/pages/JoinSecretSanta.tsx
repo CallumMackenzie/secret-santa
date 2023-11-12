@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { fetchAccount, fetchSecretSanta } from "../model/Model";
+import { useEffect, useMemo, useState } from "react";
+import { Participant, fetchAccount, fetchSecretSanta, saveAccount, saveSecretSanta } from "../model/Model";
 import { Firestore } from "firebase/firestore";
 import { Auth, User } from "firebase/auth";
 import { SignInRequired, useRequiredSignIn } from "../components/UseSignIn";
@@ -23,10 +23,20 @@ const wishlistTextLabels = ["This year I would love...",
 	"A gift I want is..."];
 
 enum JoinState {
-	NotJoined = 0,
-	Joining = 1,
-	Joined = 2,
-	JoinError = 3,
+	NotJoined,
+	Joining,
+	Joined,
+	DoesNotExist,
+	HasStarted,
+}
+
+const getJoinMessage = (s: JoinState): string => {
+	switch (s) {
+		case JoinState.Joining:
+			return "Joining Secret Santa";
+		default:
+			return "Join Secret Santa";
+	}
 }
 
 interface JoinSecretSantaProps {
@@ -38,7 +48,7 @@ export const JoinSecretSanta = (props: JoinSecretSantaProps) => {
 	const user = useRequiredSignIn(props.auth);
 
 	return (<>
-		<FestiveBackground>
+		<FestiveBackground alignItems='flex-start'>
 			<SignInRequired user={user} auth={props.auth}>
 				<JoinSecretSantaUserSignedIn {...props} user={user!!} />
 			</SignInRequired>
@@ -59,6 +69,7 @@ const JoinSecretSantaUserSignedIn = (props: JoinSecretSantaProps & {
 	const [joinUid, setJoinUid] = useState("");
 	const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
 	const [nextWishlistKey, setNextWishlistKey] = useState(0);
+	const [deliveryInfo, setDeliveryInfo] = useState("");
 
 	const wishlistLabels = useMemo(() => {
 		let labelsOrigin: string[] = Object.assign([], wishlistTextLabels);
@@ -72,12 +83,54 @@ const JoinSecretSantaUserSignedIn = (props: JoinSecretSantaProps & {
 	}, []);
 
 	const joinSecretSanta = async (uid: string) => {
+		// Search for secret santa
 		setJoinState(JoinState.Joining);
 		const secretSanta = await fetchSecretSanta(props.firestore, uid);
+		// If it does not exist, set join state and return
 		if (!secretSanta)
-			return setJoinState(JoinState.JoinError);
+			return setJoinState(JoinState.DoesNotExist);
 
+		// Fetch account data
 		const account = await fetchAccount(props.firestore, props.user);
+
+
+		// If account is already in secret santa, update its data and return
+		for (let participant of secretSanta.participants)
+			if (participant.userUid === account.userUid) {
+				// Ensure wishlist and delivery info are populated
+				if (wishlist.length === 0 || deliveryInfo === "")
+					return setJoinState(JoinState.NotJoined);
+				// Update info
+				participant.deliveryInfo = deliveryInfo;
+				participant.wishlist = wishlist.map(it => it.val);
+				// Save to database
+				await saveSecretSanta(props.firestore, secretSanta);
+				return setJoinState(JoinState.Joined);
+			}
+
+		// Account is not in secret santa
+		// Ensure wishlist and delivery info are populated
+		if (wishlist.length === 0 || deliveryInfo === "")
+			return setJoinState(JoinState.NotJoined);
+
+		setJoinState(JoinState.Joining);
+		// Create participant
+		const newParticipant: Participant = {
+			userUid: account.userUid,
+			wishlist: wishlist.map(it => it.val),
+			deliveryInfo,
+			giftFromUserUid: undefined,
+			giftsToUserUid: undefined,
+			deliveryStatus: undefined
+		};
+		// Add participant to secret santa
+		secretSanta.participants.push(newParticipant);
+		// Register secret santa to account
+		account.secretSantaUids.push(uid);
+
+		// Save to database
+		await saveAccount(props.firestore, account);
+		await saveSecretSanta(props.firestore, secretSanta);
 
 		setJoinState(JoinState.Joined);
 	};
@@ -88,9 +141,9 @@ const JoinSecretSantaUserSignedIn = (props: JoinSecretSantaProps & {
 				padding={2}
 				container
 				spacing={1}
-				textAlign="center"
+				alignItems='flex-start'
 				justifyContent='center'
-				alignItems="center">
+				textAlign="center">
 				<Grid item xs={12} textAlign='center'>
 					<Box sx={{ fontSize: 50 }}>
 						Join a Secret Santa
@@ -100,16 +153,19 @@ const JoinSecretSantaUserSignedIn = (props: JoinSecretSantaProps & {
 					<TextField
 						disabled={joinState === JoinState.Joining}
 						onChange={event => setJoinUid(event.target.value)}
-						error={joinState === JoinState.JoinError}
-						helperText={joinState === JoinState.JoinError ? "Secret santa not found" : undefined}
+						error={joinState === JoinState.DoesNotExist}
+						helperText={joinState === JoinState.DoesNotExist ? "Secret santa not found" : undefined}
 						label="Join Code" />
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<Button
 						disabled={joinState === JoinState.Joining
-							|| joinUid === ""}
+							|| joinUid === ""
+							|| (joinState === JoinState.NotJoined
+								&& wishlist.length === 0
+								&& deliveryInfo === "")}
 						onClick={() => joinSecretSanta(joinUid)}>
-						Join Secret Santa
+						{getJoinMessage(joinState)}
 					</Button>
 				</Grid>
 				<Grid item xs={12}>
@@ -119,6 +175,18 @@ const JoinSecretSantaUserSignedIn = (props: JoinSecretSantaProps & {
 						onClick={() => navigate("/home")}>
 						Home
 					</Button>
+				</Grid>
+				<Grid item xs={12}>
+					<TextField
+						onChange={event => setDeliveryInfo(event.target.value)}
+						fullWidth={true}
+						minRows={3}
+						error={deliveryInfo.trim() === ""}
+						maxRows={5}
+						multiline={true}
+						required={true}
+						label="Delivery Instructions"
+						helperText="Instructions for how you want your gift delivered to you (ie. address)" />
 				</Grid>
 				<Grid item xs={12}>
 					<Box sx={{ fontSize: 25 }}>
