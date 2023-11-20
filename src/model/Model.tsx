@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { Firestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { Firestore, collection, count, doc, getCountFromServer, getDoc, setDoc } from "firebase/firestore";
 
 /**
  * A secret santa instance.
@@ -142,13 +142,54 @@ export const saveSecretSanta = async (firestore: Firestore, secretSanta: SecretS
 	await save(firestore, 'secret-santas', secretSanta.uid, secretSanta);
 
 
+/**
+ * @param firestore Firestore app instance
+ * @returns Whether the maximum number of secret santas has been exceeded.
+ */
+export const maxSecretSantaCountExceeded = async (firestore: Firestore): Promise<boolean> => {
+	// Ensure number of secret santas does not exceed capacity (32^4).
+	const count = await getCountFromServer(collection(firestore, "secret-santas"));
+	return count.data().count >= Math.pow(32, 4);
+}
+
+/**
+ * Checkes whether a given secret santa UID code is being used.
+ * 
+ * @param firestore Firestore app instance
+ * @param code Secret santa UID code
+ * @returns Whether the given code is being used currently.
+ */
+const isSecretSantaUIDUsed = async (firestore: Firestore, code: string): Promise<boolean> => {
+	// Get entry in table path for given code
+	const codeEntry = await fetchWithKey<string>(firestore, "secret-santas", code);
+	// If not null, it is in use.
+	return codeEntry != null;
+}
+
+/**
+ * 
+ * @returns A 4-digit base 36 code string.
+ */
+const generate4DigitBase36Code = (): string => {
+	// Generate random number in [0, 36^4) to create a 4-digit base-36 number
+	let code = Math.floor(Math.random() * Math.pow(36, 4)).toString(36);
+	// Append 0s for prefixes
+	code = "0".repeat(4 - code.length) + code;
+	return code;
+};
+
+/**
+ * Gets the next secret santa UID.
+ * 
+ * @requires maxSecretSantaCountExceeded has returned false.
+ * @param firestore Firestore app instance
+ * @returns Next secret santa UID.
+ */
 export const getNextSecretSantaUid = async (firestore: Firestore): Promise<string> => {
-	// Fetch or create DB uid
-	const uid = await fetchOrCreate<SecretSantaUidStore>(firestore, 'secret-santa-next-uid', 'next-uid',
-		() => ({ nextUid: "0" }));
-	// Generate and save next UID
-	let nextUid = (parseInt(uid.nextUid, 36) + 1).toString(36);
-	await save<SecretSantaUidStore>(firestore, 'secret-santa-next-uid', 'next-uid', { nextUid });
-	// Return previous saved UID
-	return uid.nextUid;
+	let code: string;
+	// Generate codes until one is unused.
+	do code = generate4DigitBase36Code();
+	while (await isSecretSantaUIDUsed(firestore, code));
+	// Secret santa UID code is currently not being used.
+	return code;
 };
