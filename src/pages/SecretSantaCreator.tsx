@@ -3,9 +3,10 @@ import { FestiveBackground } from "../components/FestiveBackground";
 import { useEffect, useState } from "react";
 import { SignInRequired, useRequiredSignIn } from "../components/UseSignIn";
 import { Auth, User } from "firebase/auth";
-import { Account, SecretSanta, fetchAccount, getNextSecretSantaUid, saveAccount, saveSecretSanta } from "../model/Model";
 import { Firestore } from "firebase/firestore";
 import { useNavigate } from "react-router";
+import { Account, fetchAccount, saveAccount } from "../model/Account";
+import { SecretSanta, getNextSecretSantaUid, saveSecretSanta } from "../model/SecretSanta";
 
 
 
