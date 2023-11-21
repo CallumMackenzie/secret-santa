@@ -1,12 +1,21 @@
 import { Box, BoxProps } from "@mui/material";
 import { keyframes } from '@emotion/react';
 
-const moveUpAnimation = keyframes`
+const moveMoonUpAnimation = keyframes`
   0% {
     transform: translateY(50%); // Start from the bottom
   }
   100% {
     transform: translateY(-10%); // Move to the top
+  }
+`;
+
+const moveStarsLeftRightAnimation = keyframes`
+  0% {
+    transform: translateX(-5px); // Start 3 pixels to the left
+  }
+  100% {
+    transform: translateX(0); // Move back to original position
   }
 `;
 
@@ -16,12 +25,13 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
         /*Full image without the moon*/
         <Box
             sx={{
+                zIndex: 1,
                 position: 'relative',
                 minHeight: '100vh',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundImage: 'url("/WinterVectorNoMoon.svg")',
+                backgroundImage: 'url("/WinterVectorNoStarsSnowOrMoon.svg")',
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center center',
@@ -29,9 +39,26 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
             }}
             {...props}
         >
+            {/* Moving Stars and Snow */}
+            <Box
+                sx={{
+                    zIndex: 2,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: 'url("/WinterVectorStarsAndSnowOnly.svg")',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center',
+                    animation: `${moveStarsLeftRightAnimation} 3s ease-in-out infinite alternate` // Move stars and snow left and right forever
+                }}
+            />
             {/* Moving Moon */}
             <Box
                 sx={{
+                    zIndex: 3,
                     position: 'absolute',
                     top: 0,
                     left: 0,
@@ -41,18 +68,19 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
-                    animation: `${moveUpAnimation} 5s forwards` // Move the moon up
+                    animation: `${moveMoonUpAnimation} 5s forwards` // Move the moon up
                 }}
             />
             {/* Mountains only image */}
             <Box
                 sx={{
+                    zIndex: 4,
                     position: 'absolute',
                     top: 0,
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    backgroundImage: 'url("/WinterVectorTransparentBackground.svg")',
+                    backgroundImage: 'url("/WinterVectorTransparentBackgroundWithSnow.svg")',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center'

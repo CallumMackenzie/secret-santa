@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Button, Grid, Paper } from '@mui/material';
+import { Box, Button, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Auth } from 'firebase/auth';
 import { signInGoogle, useSignIn } from '../components/UseSignIn';
@@ -38,7 +38,11 @@ export const SignIn = (props: {
 					direction="column"
 					textAlign="center">
 					<Grid item xs={12}>
-						<h1 style={h1Style}>Secret Santa!</h1>
+						<Box sx = {{
+							zIndex: 5,
+							position: 'relative'}}>
+								<h1 style={h1Style}>Secret Santa</h1>
+						</Box>
 					</Grid>
 					<Grid item xs={12}>
 					<SignInButton auth={props.auth}/>
