@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Auth } from 'firebase/auth';
 import { signInGoogle, useSignIn } from '../components/UseSignIn';
 import { FestiveBackground } from '../components/FestiveBackground';
+import { SignInButton } from '../components/SignInButton';
 
 export const SignIn = (props: {
 	auth: Auth
@@ -16,28 +17,23 @@ export const SignIn = (props: {
 		if (foundUser) navigate("home");
 	}, [foundUser]);
 
+	const h1Style = {
+		fontFamily: 'Arial, sans-serif', 
+	};
+
 	return (<>
 		<FestiveBackground>
-			<Paper
-				sx={{ p: 5 }}
-				elevation={5}>
 				<Grid
 					container
 					direction="column"
 					textAlign="center">
 					<Grid item xs={12}>
-						<h1>Secret Santa!</h1>
+						<h1 style={h1Style}>Secret Santa!</h1>
 					</Grid>
 					<Grid item xs={12}>
-						<Button
-							variant='contained'
-							disabled={foundUser ?? true}
-							onClick={() => signInGoogle(props.auth)}>
-							Sign in With Google
-						</Button>
+					<SignInButton auth={props.auth}/>
 					</Grid>
 				</Grid>
-			</Paper>
 		</FestiveBackground>
 	</>);
 }
