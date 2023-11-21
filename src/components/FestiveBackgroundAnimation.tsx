@@ -3,16 +3,17 @@ import { keyframes } from '@emotion/react';
 
 const moveUpAnimation = keyframes`
   0% {
-    transform: translateY(0);
+    transform: translateY(50%); // Start from the bottom
   }
   100% {
-    transform: translateY(-20px); // Adjust this value for desired movement
+    transform: translateY(-10%); // Move to the top
   }
 `;
 
 
 export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxProps) => {
     return (
+        /*Full image without the moon*/
         <Box
             sx={{
                 position: 'relative',
@@ -28,7 +29,7 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
             }}
             {...props}
         >
-            {/* Moving Image */}
+            {/* Moving Moon */}
             <Box
                 sx={{
                     position: 'absolute',
@@ -40,11 +41,25 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
-                    animation: `${moveUpAnimation} 1s ease-in-out infinite alternate` // Apply the animation
+                    animation: `${moveUpAnimation} 5s forwards` // Move the moon up
                 }}
             />
-
+            {/* Mountains only image */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: 'url("/WinterVectorTransparentBackground.svg")',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center'
+                }}
+            />
             {props.children}
         </Box>
+        
     );
 }

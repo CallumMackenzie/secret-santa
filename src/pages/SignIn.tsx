@@ -4,7 +4,7 @@ import { Button, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Auth } from 'firebase/auth';
 import { signInGoogle, useSignIn } from '../components/UseSignIn';
-import { FestiveBackground } from '../components/FestiveBackground';
+import { FestiveBackgroundAnimation } from '../components/FestiveBackgroundAnimation';
 import { SignInButton } from '../components/SignInButton';
 
 export const SignIn = (props: {
@@ -17,12 +17,22 @@ export const SignIn = (props: {
 		if (foundUser) navigate("home");
 	}, [foundUser]);
 
+	useEffect(() => {
+        // Disable scrolling
+        document.body.style.overflow = 'hidden';
+
+        // Re-enable scrolling when the component is unmounted
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
+
 	const h1Style = {
 		fontFamily: 'Arial, sans-serif', 
 	};
 
 	return (<>
-		<FestiveBackground>
+		<FestiveBackgroundAnimation>
 				<Grid
 					container
 					direction="column"
@@ -34,6 +44,6 @@ export const SignIn = (props: {
 					<SignInButton auth={props.auth}/>
 					</Grid>
 				</Grid>
-		</FestiveBackground>
+		</FestiveBackgroundAnimation>
 	</>);
 }
