@@ -6,8 +6,9 @@ import { SignInRequired, useRequiredSignIn } from '../components/UseSignIn';
 import { SignOutButton } from '../components/SignOutButton';
 import { FestiveBackground } from '../components/FestiveBackground';
 import { NavigateFunction, useNavigate } from 'react-router';
-import { Account, SecretSanta, fetchAccount, fetchSecretSanta } from '../model/Model';
 import { useEffect, useState } from 'react';
+import { Account, fetchAccount } from '../model/Account';
+import { SecretSanta, fetchSecretSanta } from '../model/SecretSanta';
 
 
 export const Home = (props: {

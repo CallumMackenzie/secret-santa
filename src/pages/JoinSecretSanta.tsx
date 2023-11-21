@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Participant, fetchAccount, fetchSecretSanta, saveAccount, saveSecretSanta } from "../model/Model";
 import { Firestore } from "firebase/firestore";
 import { Auth, User } from "firebase/auth";
 import { SignInRequired, useRequiredSignIn } from "../components/UseSignIn";
@@ -7,6 +6,9 @@ import { FestiveBackground } from "../components/FestiveBackground";
 import { Box, Button, Grid, IconButton, List, ListItem, Paper, TextField } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Delete } from "@mui/icons-material";
+import { fetchSecretSanta, saveSecretSanta } from "../model/SecretSanta";
+import { fetchAccount, saveAccount } from "../model/Account";
+import { Participant } from "../model/Participant";
 
 const wishlistTextLabels = ["This year I would love...",
 	"I wish for...",
