@@ -98,7 +98,8 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
                     backgroundImage: 'url("/WinterVectorTransparentBackgroundWithSnow.svg")',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center center'
+                    backgroundPosition: 'center center',
+                    pointerEvents: 'none' // To allow the sign in button to still be press despite being overlayed on top
                 }}
             />
             {props.children}

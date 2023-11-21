@@ -7,7 +7,8 @@ import { signInGoogle, useSignIn } from '../components/UseSignIn';
 import { FestiveBackgroundAnimation } from '../components/FestiveBackgroundAnimation';
 import { SignInButton } from '../components/SignInButton';
 
-const moveSignInButtonToTop = keyframes`
+// To move button and text to top
+const moveToTop = keyframes`
   0% {
     transform: translateY(900%); // Start from the bottom
   }
@@ -37,7 +38,8 @@ export const SignIn = (props: {
     }, []);
 
 	const h1Style = {
-		fontFamily: 'Arial, sans-serif', 
+		fontFamily: 'Arial, sans-serif',
+		color: '#214168'
 	};
 
 	return (<>
@@ -49,7 +51,8 @@ export const SignIn = (props: {
 					<Grid item xs={12}>
 						<Box sx = {{
 							zIndex: 5,
-							position: 'relative'}}>
+							position: 'relative',
+							animation: `${moveToTop} 5s forwards`}}>
 								<h1 style={h1Style}>Secret Santa</h1>
 						</Box>
 					</Grid>
@@ -57,7 +60,7 @@ export const SignIn = (props: {
 					<Box sx = {{
 							zIndex: 5,
 							position: 'relative',
-							animation: `${moveSignInButtonToTop} 5s forwards`}}>
+							animation: `${moveToTop} 5s forwards`}}>
 					<SignInButton auth={props.auth}/>
 					</Box>
 					</Grid>
