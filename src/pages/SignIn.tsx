@@ -1,11 +1,20 @@
 
 import React, { useEffect } from 'react';
-import { Box, Button, Grid, Paper } from '@mui/material';
+import { Box, Button, Grid, Paper, keyframes } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Auth } from 'firebase/auth';
 import { signInGoogle, useSignIn } from '../components/UseSignIn';
 import { FestiveBackgroundAnimation } from '../components/FestiveBackgroundAnimation';
 import { SignInButton } from '../components/SignInButton';
+
+const moveSignInButtonToTop = keyframes`
+  0% {
+    transform: translateY(900%); // Start from the bottom
+  }
+  100% {
+    transform: translateY(0%); // Move to the top
+  }
+`;
 
 export const SignIn = (props: {
 	auth: Auth
@@ -47,7 +56,8 @@ export const SignIn = (props: {
 					<Grid item xs={12}>
 					<Box sx = {{
 							zIndex: 5,
-							position: 'relative'}}>
+							position: 'relative',
+							animation: `${moveSignInButtonToTop} 5s forwards`}}>
 					<SignInButton auth={props.auth}/>
 					</Box>
 					</Grid>

@@ -71,10 +71,25 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
                     animation: `${moveMoonUpAnimation} 5s forwards` // Move the moon up
                 }}
             />
-            {/* Mountains only image */}
+            {/* Mountains only image to cover the moon*/}
             <Box
                 sx={{
                     zIndex: 4,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: 'url("/WinterVectorTransparentBackgroundWithSnow.svg")',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center'
+                }}
+            />
+            {/* Mountains only image to cover the sign in button*/}
+            <Box
+                sx={{
+                    zIndex: 7,
                     position: 'absolute',
                     top: 0,
                     left: 0,
