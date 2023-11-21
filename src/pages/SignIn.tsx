@@ -45,7 +45,11 @@ export const SignIn = (props: {
 						</Box>
 					</Grid>
 					<Grid item xs={12}>
+					<Box sx = {{
+							zIndex: 5,
+							position: 'relative'}}>
 					<SignInButton auth={props.auth}/>
+					</Box>
 					</Grid>
 				</Grid>
 		</FestiveBackgroundAnimation>
