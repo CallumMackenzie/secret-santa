@@ -5,7 +5,7 @@ export const FestiveBackground = (props: React.PropsWithChildren & BoxProps) => 
 	return (<>
 		<Box
 			style={{
-				backgroundImage: 'url("/WinterVectorCompleteArt.svg")',
+				backgroundImage: 'url("/WinterVectorNoMoon.svg")',
 				backgroundSize: "cover",
 				backgroundRepeat: "no-repeat",
 				backgroundPosition: "center center",
