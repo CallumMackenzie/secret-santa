@@ -19,6 +19,20 @@ const moveStarsLeftRightAnimation = keyframes`
   }
 `;
 
+//Goes to from start to finish 0% -> 16.67% in 1 second and then will take 5 seconds to get to 100% so that we can delay the animation.
+const shootingStarAnimation = keyframes`
+0% {
+    transform: translateX(-100px) translateY(-100px);
+    opacity: 100%;
+  }
+16.67% {
+    transform: translateX(766px) translateY(400px);
+  }
+100% {
+    transform: translateX(766px) translateY(405px);
+  }
+`;
+
 
 export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxProps) => {
     return (
@@ -53,6 +67,24 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                     animation: `${moveStarsLeftRightAnimation} 3s ease-in-out infinite alternate` // Move stars and snow left and right forever
+                }}
+            />
+                {/* Moving Shooting Star */}
+                <Box
+                sx={{
+                    zIndex: 2,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    opacity: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: 'url("/WinterVectorOnlyShootingStar.svg")',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center',
+                    animation: `${shootingStarAnimation} 6s linear infinite`, // Move stars and snow left and right forever
+                    animationDelay: '3s'
                 }}
             />
             {/* Moving Moon */}
