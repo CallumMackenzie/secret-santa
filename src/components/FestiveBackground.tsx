@@ -5,9 +5,11 @@ export const FestiveBackground = (props: React.PropsWithChildren & BoxProps) => 
 	return (<>
 		<Box
 			style={{
-				backgroundImage: 'url("/background.jpg")',
+				backgroundImage: 'url("/LongVectorWinterBackground.svg")',
 				backgroundSize: "cover",
-				backgroundRepeat: "no-repeat"
+				backgroundRepeat: "no-repeat",
+				backgroundPosition: "center center",
+				backgroundAttachment: "scroll"
 			}}
 			display="flex"
 			justifyContent="center"
