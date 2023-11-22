@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Box, Button, Grid, Paper, keyframes } from '@mui/material';
+import { Box, Button, Grid, Paper, Typography, keyframes } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Auth } from 'firebase/auth';
 import { signInGoogle, useSignIn } from '../components/UseSignIn';
@@ -28,10 +28,15 @@ export const SignIn = (props: {
 	}, [foundUser]);
 
 	useEffect(() => {
-        // Disable scrolling
-        document.body.style.overflow = 'hidden';
+    	// Disable scrolling
+    	const originalStyle = window.getComputedStyle(document.body).overflow;  
+    	document.body.style.overflow = 'hidden';
 
-        // Re-enable scrolling when the component is unmounted
+    	// Prevent touchmove events for iOS devices
+    	const preventTouchMove = (e: { preventDefault: () => any; }) => e.preventDefault();
+    	document.addEventListener('touchmove', preventTouchMove, { passive: false });
+
+    	// Re-enable scrolling when the component is unmounted
         return () => {
             document.body.style.overflow = 'unset';
         };
@@ -39,8 +44,10 @@ export const SignIn = (props: {
 
 	const h1Style = {
 		fontFamily: 'Arial, sans-serif',
-		color: '#214168'
-	};
+		color: '#214168',
+		fontWeight: 'bold',
+		fontSize: '3rem'
+		};
 
 	return (<>
 		<FestiveBackgroundAnimation>
@@ -48,15 +55,18 @@ export const SignIn = (props: {
 					container
 					direction="column"
 					textAlign="center">
-					<Grid item xs={12}>
+					<Grid item xs={1} sm={1} md={1} lg={1}>
 						<Box sx = {{
 							zIndex: 5,
 							position: 'relative',
+							padding: '2rem',
 							animation: `${moveToTop} 5s forwards`}}>
-								<h1 style={h1Style}>Secret Santa</h1>
+								<Typography variant="h1" sx={h1Style}>
+								Secret Santa
+								</Typography >
 						</Box>
 					</Grid>
-					<Grid item xs={12}>
+					<Grid item xs={1} sm={1} md={1} lg={1}>
 					<Box sx = {{
 							zIndex: 5,
 							position: 'relative',

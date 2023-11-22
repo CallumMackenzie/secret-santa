@@ -36,7 +36,20 @@ const shootingStarAnimation = keyframes`
 
 export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxProps) => {
     return (
-        /*Full image without the moon*/
+        // Wrap the entire animation inside of another box that will act as the background
+        <Box
+        sx={{
+            zIndex: 1,
+            position: 'relative',
+            width: '100vw', // Fixed viewport width
+            height: '100vh', // Fixed viewport height
+            overflow: 'hidden', // Prevent scrolling caused by overflowing content
+            ...props.sx
+        }}
+    >
+
+
+        {/*Full image without the moon*/}
         <Box
             sx={{
                 zIndex: 1,
@@ -81,6 +94,7 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
                     height: '100%',
                     backgroundImage: 'url("/WinterVectorOnlyShootingStar.svg")',
                     backgroundSize: 'cover',
+                    backgroundAttachment: 'fixed',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                     animation: `${shootingStarAnimation} 6s linear infinite`, // Move stars and snow left and right forever
@@ -136,6 +150,6 @@ export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxP
             />
             {props.children}
         </Box>
-        
+        </Box>
     );
 }
