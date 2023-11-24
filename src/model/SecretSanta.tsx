@@ -1,6 +1,7 @@
 import { Firestore, collection, getCountFromServer } from "firebase/firestore";
 import { fetchWithKey, save } from "./FirebaseUtils";
 import { Participant } from "./Participant";
+import { fetchAccount, fetchAccountWithUid, saveAccount } from "./Account";
 
 
 /**
@@ -86,3 +87,37 @@ export const getNextSecretSantaUid = async (firestore: Firestore): Promise<strin
 	// Secret santa UID code is currently not being used.
 	return code;
 };
+
+
+/**
+ * Adds participant to secret santa and saves all info for secret santa
+ * and participant to firestore.
+ * 
+ * @param firestore Firestore app instance
+ * @param secretSanta Secret santa to add participant to
+ * @param participant Participant to add
+ */
+export const addParticipantToSecretSanta = async (firestore: Firestore,
+	secretSanta: SecretSanta,
+	participant: Participant) => {
+	// Check if user is already in secret santa
+	for (let ssParticipant of secretSanta.participants)
+		if (participant.userUid === ssParticipant.userUid)
+			return;
+	// User is not in secret santa
+	// Start fetching account
+	const accountPromise = fetchAccountWithUid(firestore, participant.userUid);
+	// Add participant to secret santa
+	secretSanta.participants.push(participant);
+	// Save secret santa
+	const ssSaved = saveSecretSanta(firestore, secretSanta);
+	// Add secret santa uid to account
+	const account = await accountPromise;
+	account.secretSantaUids.push(secretSanta.uid);
+	// Save account
+	const accSaved = saveAccount(firestore, account);
+
+	// Make sure both saved before returning
+	await ssSaved;
+	await accSaved;
+}

@@ -14,16 +14,24 @@ export interface Account {
 /**
  * 
  * @param firestore Firestore app instance
+ * @param uid User UID
+ * @returns Account model data saved for the given user, or creates it if not present.
+ */
+export const fetchAccountWithUid = async (firestore: Firestore, uid: string): Promise<Account> =>
+	await fetchOrCreate(firestore, 'accounts', uid, () => ({
+		userUid: uid,
+		adminOfSecretSantas: [],
+		secretSantaUids: []
+	}));
+
+/**
+ * 
+ * @param firestore Firestore app instance
  * @param user Firebase user
  * @returns Account model data saved for the given user, or creates it if not present.
  */
 export const fetchAccount = async (firestore: Firestore, user: User): Promise<Account> =>
-	await fetchOrCreate(firestore, 'accounts', user.uid, () => ({
-		userUid: user.uid,
-		secretSantaUids: [],
-		adminOfSecretSantas: []
-	}));
-
+	fetchAccountWithUid(firestore, user.uid);
 /**
  * Saves given Account model data to firestore.
  * 
