@@ -19,137 +19,106 @@ const moveStarsLeftRightAnimation = keyframes`
   }
 `;
 
-//Goes to from start to finish 0% -> 16.67% in 1 second and then will take 5 seconds to get to 100% so that we can delay the animation.
-const shootingStarAnimation = keyframes`
-0% {
-    transform: translateX(-100px) translateY(-100px);
-    opacity: 100%;
-  }
-16.67% {
-    transform: translateX(766px) translateY(400px);
-  }
-100% {
-    transform: translateX(766px) translateY(405px);
-  }
-`;
-
 
 export const FestiveBackgroundAnimation = (props: React.PropsWithChildren & BoxProps) => {
-    return (
-        // Wrap the entire animation inside of another box that will act as the background
-        <Box
-        sx={{
-            zIndex: 1,
-            position: 'relative',
-            width: '100vw', // Fixed viewport width
-            height: '100vh', // Fixed viewport height
-            overflow: 'hidden', // Prevent scrolling caused by overflowing content
-            ...props.sx
-        }}
+  return (
+    // Wrap the entire animation inside of another box that will act as the background
+    <Box
+      sx={{
+        zIndex: 1,
+        position: 'absolute',
+        width: '100vw', // Fixed viewport width
+        height: '100vh', // Fixed viewport height
+        overflow: 'hidden', // Prevent scrolling caused by overflowing content
+        ...props.sx
+      }}
     >
 
+      {/*Full image without the moon*/}
+      <Box
+        sx={{
+          zIndex: 1,
+          position: 'absolute',
+          width: '100vw', // Fixed viewport width
+          height: '100vh', // Fixed viewport height
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundImage: 'url("/WinterVectorNoStarsSnowOrMoon.svg")',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          ...props.sx
+        }}
+        {...props}
+      >
 
-        {/*Full image without the moon*/}
+        {/* Static Stars and Snow */}
         <Box
-            sx={{
-                zIndex: 1,
-                position: 'relative',
-                minHeight: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundImage: 'url("/WinterVectorNoStarsSnowOrMoon.svg")',
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center center',
-                ...props.sx
-            }}
-            {...props}
-        >
-            {/* Moving Stars and Snow */}
-            <Box
-                sx={{
-                    zIndex: 2,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage: 'url("/WinterVectorStarsAndSnowOnly.svg")',
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center center',
-                    animation: `${moveStarsLeftRightAnimation} 3s ease-in-out infinite alternate` // Move stars and snow left and right forever
-                }}
-            />
-                {/* Moving Shooting Star */}
-                <Box
-                sx={{
-                    zIndex: 2,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    opacity: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage: 'url("/WinterVectorOnlyShootingStar.svg")',
-                    backgroundSize: 'cover',
-                    backgroundAttachment: 'fixed',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center center',
-                    animation: `${shootingStarAnimation} 6s linear infinite`, // Move stars and snow left and right forever
-                    animationDelay: '3s'
-                }}
-            />
-            {/* Moving Moon */}
-            <Box
-                sx={{
-                    zIndex: 3,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage: 'url("/WinterVectorOnlyTheMoon.svg")',
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center center',
-                    animation: `${moveMoonUpAnimation} 5s forwards` // Move the moon up
-                }}
-            />
-            {/* Mountains only image to cover the moon*/}
-            <Box
-                sx={{
-                    zIndex: 4,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage: 'url("/WinterVectorTransparentBackgroundWithSnow.svg")',
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center center'
-                }}
-            />
-            {/* Mountains only image to cover the sign in button*/}
-            <Box
-                sx={{
-                    zIndex: 7,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundImage: 'url("/WinterVectorTransparentBackgroundWithSnow.svg")',
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center center',
-                    pointerEvents: 'none' // To allow the sign in button to still be press despite being overlayed on top
-                }}
-            />
-            {props.children}
-        </Box>
-        </Box>
-    );
+          sx={{
+            zIndex: 2,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: 'url("/WinterVectorStarsAndSnowOnly.svg")',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            //animation: `${moveStarsLeftRightAnimation} 3s ease-in-out infinite alternate` // Move stars and snow left and right forever
+          }}
+        />
+
+        {/* Moving Moon */}
+        <Box
+          sx={{
+            zIndex: 3,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: 'url("/WinterVectorOnlyTheMoon.svg")',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            animation: `${moveMoonUpAnimation} 5s forwards` // Move the moon up
+          }}
+        />
+        {/* Mountains only image to cover the moon*/}
+        <Box
+          sx={{
+            zIndex: 4,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: 'url("/WinterVectorTransparentBackgroundWithSnow.svg")',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center'
+          }}
+        />
+        {/* Mountains only image to cover the sign in button*/}
+        <Box
+          sx={{
+            zIndex: 7,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: 'url("/WinterVectorTransparentBackgroundWithSnow.svg")',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            pointerEvents: 'none' // To allow the sign in button to still be press despite being overlayed on top
+          }}
+        />
+        {props.children}
+      </Box>
+    </Box>
+  );
 }
