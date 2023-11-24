@@ -1,9 +1,9 @@
 
-import React, { useEffect } from 'react';
-import { Box, Button, Grid, Paper, Typography, keyframes } from '@mui/material';
+import { useEffect } from 'react';
+import { Box, Grid, Typography, keyframes } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Auth } from 'firebase/auth';
-import { signInGoogle, useSignIn } from '../components/UseSignIn';
+import { useSignIn } from '../components/UseSignIn';
 import { FestiveBackgroundAnimation } from '../components/FestiveBackgroundAnimation';
 import { SignInButton } from '../components/SignInButton';
 
@@ -29,7 +29,6 @@ export const SignIn = (props: {
 
 	useEffect(() => {
     	// Disable scrolling
-    	const originalStyle = window.getComputedStyle(document.body).overflow;  
     	document.body.style.overflow = 'hidden';
 
     	// Prevent touchmove events for iOS devices
