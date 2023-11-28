@@ -1,6 +1,7 @@
 import { Firestore } from "firebase/firestore";
 import { fetchOrCreate, save } from "./FirebaseUtils";
 import { User } from "firebase/auth";
+import { SecretSanta } from "./SecretSanta";
 
 /**
  * Account data for users
@@ -40,3 +41,18 @@ export const fetchAccount = async (firestore: Firestore, user: User): Promise<Ac
  */
 export const saveAccount = async (firestore: Firestore, account: Account) =>
 	await save(firestore, 'accounts', account.userUid, account);
+
+/**
+ * Saves given account to admin of given secret santa.
+ * DOES NOT update secret santa data.
+ * 
+ * @param firestore Firestore app instance
+ * @param account Account to set as admin
+ * @param secretSanta Sets this account to admin of given secret santa.
+ */
+export const saveAccountAsAdmin = async (firestore: Firestore,
+	account: Account,
+	secretSanta: SecretSanta) => {
+	account.adminOfSecretSantas.push(secretSanta.uid);
+	await saveAccount(firestore, account);
+}

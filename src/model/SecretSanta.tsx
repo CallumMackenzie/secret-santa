@@ -1,7 +1,7 @@
 import { Firestore, collection, getCountFromServer } from "firebase/firestore";
 import { fetchWithKey, save } from "./FirebaseUtils";
 import { Participant } from "./Participant";
-import { fetchAccount, fetchAccountWithUid, saveAccount } from "./Account";
+import { fetchAccount, fetchAccountWithUid, saveAccount, saveAccountAsAdmin } from "./Account";
 
 
 /**
@@ -120,4 +120,40 @@ export const addParticipantToSecretSanta = async (firestore: Firestore,
 	// Make sure both saved before returning
 	await ssSaved;
 	await accSaved;
+}
+
+/**
+ * Creates and saves a new secret santa to database.
+ * Updates user admin data to include new secret santa.
+ * 
+ * @param firestore Firestore app instance
+ * @param name Secret santa name
+ * @param adminUserUid Secret santa admin user ID
+ * @param guidelines Secret santa guidelines
+ * @returns New secret santa instance which is saved to database.
+ */
+export const createSecretSanta = async (firestore: Firestore,
+	name: string,
+	adminUserUid: string,
+	guidelines: string
+): Promise<SecretSanta> => {
+	// Generate UID
+	const ssUid = await getNextSecretSantaUid(firestore);
+	// Create secret santa
+	const ss: SecretSanta = {
+		adminUserUid,
+		name,
+		guidelines,
+		participants: [],
+		uid: ssUid,
+		started: false
+	};
+	// Save secret santa to firestore
+	const saveSecretSantaPromise = saveSecretSanta(firestore, ss);
+	// Update account secret santas
+	const account = fetchAccountWithUid(firestore, adminUserUid);
+	const saveAccountPromise = saveAccountAsAdmin(firestore, await account, ss);
+	// Ensure everything is saved before returning
+	await Promise.all([saveSecretSantaPromise, saveAccountPromise]);
+	return ss;
 }

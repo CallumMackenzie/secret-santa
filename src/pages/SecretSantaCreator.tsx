@@ -6,7 +6,7 @@ import { Auth, User } from "firebase/auth";
 import { Firestore } from "firebase/firestore";
 import { useNavigate } from "react-router";
 import { Account, fetchAccount, saveAccount } from "../model/Account";
-import { SecretSanta, getNextSecretSantaUid, saveSecretSanta } from "../model/SecretSanta";
+import { SecretSanta, createSecretSanta, getNextSecretSantaUid, saveSecretSanta } from "../model/SecretSanta";
 
 
 
@@ -45,27 +45,9 @@ const SecretSantaCreatorUserVerified = (props: {
 			.then(account => setAdmin(account));
 	}, [props.firestore, props.user]);
 
-	const createSecretSanta = async (uid: string) => {
-		const secretSanta: SecretSanta = {
-			uid,
-			name: name!!,
-			adminUserUid: admin!!.userUid,
-			participants: [],
-			guidelines: guidelines!!,
-			started: false
-		};
-		await saveSecretSanta(props.firestore, secretSanta);
-	};
-
-	const updateAdmin = async (uid: string) => {
-		admin?.adminOfSecretSantas.push(uid);
-		await saveAccount(props.firestore, admin!!);
-	};
-
 	const create = async () => {
 		setCreationState(CreationState.Creating);
-		const uid = await getNextSecretSantaUid(props.firestore);
-		await Promise.all([createSecretSanta(uid), updateAdmin(uid)]);
+		createSecretSanta(props.firestore, name!!, admin!!.userUid, guidelines!!);
 		setCreationState(CreationState.Created);
 	};
 
