@@ -138,14 +138,14 @@ export const createSecretSanta = async (firestore: Firestore,
 	guidelines: string
 ): Promise<SecretSanta> => {
 	// Generate UID
-	const ssUid = await getNextSecretSantaUid(firestore);
+	const ssUid = getNextSecretSantaUid(firestore);
 	// Create secret santa
 	const ss: SecretSanta = {
 		adminUserUid,
 		name,
 		guidelines,
 		participants: [],
-		uid: ssUid,
+		uid: await ssUid,
 		started: false
 	};
 	// Save secret santa to firestore
