@@ -40,3 +40,55 @@
 	- Undelievered
 	- Delivered
 	- Recieved
+
+## Pages
+
+### Login Page
+From the login page I need to be able to create an account or login.
+<br/>
+The page simply needs to be simple and look nice, with a Christmas theme.
+
+### Home page
+From the home page I need to be able to
+- Sign out
+- Join a secret santa (do this directly on the homepage)
+- Create a secret santa (go to creation page)
+- See the secret santas I admin and edit them (go to editor page)
+- See the secret santas I am a part of and view them (go to viewing page)
+
+### Creation page
+From the creation page I need to be able to
+- Cancel creation (return home)
+- Edit secret santa name
+- Edit secret santa description
+- Create the secret santa
+- View the secret santa join code
+
+### Editor page
+From the editor page I need to be able to
+- Delete a secret santa
+- Remove individuals from a secret santa if it has not started
+- Start the secret santa if it has not started
+- Go back home
+<br/>
+Depends on a given secret santa, so the page must have a UID parameter.
+
+### Viewing page
+From the viewing page I need to be able to
+- View the secret santa name
+- View secret santa description
+- Go home
+
+If the secret santa has started: <br/>
+- See the individual I got
+- See the individual who I got's wishlist
+- See the individual who I got's delivery info
+- Notify that I have delivered my gift
+- See the delivery status the gift I am to recieve
+
+If the secret santa has not started: <br/>
+- Edit my wishlist
+- Leave the secret santa
+
+<br/>
+Depends on a given secret santa, so the page must have a UID parameter.
